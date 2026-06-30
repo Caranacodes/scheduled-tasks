@@ -31,7 +31,7 @@ for index, row in bday_df.iterrows():
         # print (bday_person)
 
 # 3. If step 2 is true, pick a random letter from letter templates and replace the [NAME] with the person's actual name from birthdays.csv
-with open("C:/Users/gbemr/PycharmProjects/Birthday_Wish_Project/birthday-wisher-extrahard-start/letter_templates/letter_3.txt", "r") as letter_file:
+with open("", "r") as letter_file:
     letter_contents = letter_file.read()
     new_letter= letter_contents.replace("[NAME]", bday_person)
 
