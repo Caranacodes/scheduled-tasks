@@ -1,66 +1,47 @@
-# Run Your Python Script Daily (Free!)
-
-This template runs your Python script automatically using GitHub Actions.
-
-**No server needed. No credit card. Completely free.**
-
----
-
-## Setup Instructions
-
-### Step 1: Create Your Own Copy
-
-**<img width="1529" height="392" alt="image" src="https://github.com/user-attachments/assets/ad18c370-5d54-4cf0-aebf-4826c3928281" />
-**
-
-- Click the **"fork"** button at the top of this page
-
-You now have your own copy to edit!
-
-### Step 2: Enable the Github Action Workflows
-
-The workflows I created for you will be disabled automatically on your copy. You have to enable them. 
-
-- Click the green button **"I understand my workflows etc etc"**
- 
-<img width="834" height="349" alt="image" src="https://github.com/user-attachments/assets/296570ac-3800-40d6-9585-d501538cfc8c" />
-
-Obviously one should always (!) check before running random stuff on the internet ;) 
-And of course, once checked, the workflows need to be enabled:
-
-<img width="1547" height="895" alt="image" src="https://github.com/user-attachments/assets/d7fbd3c7-0215-44f8-bba7-8c04c3447b5a" />
-
-
----
-
-### Step 3: Add Your Code
-
-#### 3a. Copy your Python files
-
-Upload or copy-paste your Python code into `main.py`
-
-If you have other files your script needs (like `.csv` files or `.txt` templates),
-add those to the repository too.
-
-#### 3b. Make these two small changes to your code:
-
-**Change 1:** Add this import at the top of your file:
-
-```python
 import os
-```
+import smtplib
+import datetime as dt
+import pandas
 
-**Change 2:** Replace any hardcoded passwords/API keys with this pattern:
 
-```python
-# BEFORE (don't do this - secrets visible to everyone!)
-MY_EMAIL = "myemail@gmail.com"
-MY_PASSWORD = "mysecretpassword"
+# 1. Update the birthdays.csv
+# Successfully done!
 
-# AFTER (secrets stored securely in GitHub)
-MY_EMAIL = os.environ.get("MY_EMAIL")
-MY_PASSWORD = os.environ.get("MY_PASSWORD")
-```
+# 2. Check if today matches a birthday in the birthdays.csv
+bday_df = pandas.read_csv("birthdays.csv")
+# print(bday_df)
+# print(bday_df.columns)
+bday_month = bday_df["month"]
+dayy = bday_df["day"]
+
+today= dt.datetime.today()
+
+for index, row in bday_df.iterrows():
+    if row["month"] == today.month and row["day"] == today.day:
+        # print(f"Today is {row['name']}'s birthday!")
+        bday_person= row['name']
+        # print (bday_person)
+
+# 3. If step 2 is true, pick a random letter from letter templates and replace the [NAME] with the person's actual name from birthdays.csv
+with open("C:/Users/gbemr/PycharmProjects/Birthday_Wish_Project/birthday-wisher-extrahard-start/letter_templates/letter_3.txt", "r") as letter_file:
+    letter_contents = letter_file.read()
+    new_letter= letter_contents.replace("[NAME]", bday_person)
+
+with open(f"C:/Users/gbemr/PycharmProjects/Birthday_Wish_Project/birthday-wisher-extrahard-start/letter_templates/letter_for_{bday_person}.txt", mode= 'w') as completed_letter:
+    completed_letter.write(new_letter)
+
+
+# 4. Send the letter generated in step 3 to that person's email address.
+MY_EMAIL = os.environ.get("my_email")
+MY_PASSWORD = os.environ.get("my_password")
+connection= smtplib.SMTP('smtp.gmail.com', 587)
+connection.set_debuglevel(1)
+connection.starttls()
+connection.login(user= my_email, password= 'nhkf vmcf lnin zqlr')
+connection.sendmail(from_addr=my_email, to_addrs="oghenerunogbemre2026@gmail.com",
+						msg= f"Subject: Happy Birthday \n\n {new_letter}")
+connection.close()
+
 
 #### 3c. Add your dependencies
 
