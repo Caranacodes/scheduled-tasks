@@ -26,11 +26,11 @@ for index, row in bday_df.iterrows():
     if row["month"] == today.month and row["day"] == today.day:
         bday_person = row["name"]
 
-        with open("scheduled-tasks/letter_templates/letter_3.txt", "r") as letter_file:
+        with open("letter_templates/letter_3.txt", "r") as letter_file:
             letter_contents = letter_file.read()
             new_letter = letter_contents.replace("[NAME]", bday_person)
 
-        with open(f"scheduled-tasks/letter_templates/letter_for_{bday_person}.txt", "w") as completed_letter:
+        with open(f"letter_templates/letter_for_{bday_person}.txt", "w") as completed_letter:
             completed_letter.write(new_letter)
 
         my_email = os.environ.get("MY_EMAIL")
